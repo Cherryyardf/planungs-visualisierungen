@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zielgruppen KlimaMatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800">
+                Zielgruppen für <span class="text-emerald-600">KlimaMatch</span>
+            </h1>
+            <p class="mt-2 text-lg text-gray-600">Eine visuelle Übersicht der relevanten Personas</p>
+        </header>
+
+        <!-- Grid Container for the cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+
+            <!-- Card 1: Die Offenen -->
+            <div class="card bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center border-t-4 border-emerald-500">
+                <div class="mb-4">
+                    <div class="bg-emerald-100 rounded-full p-3 inline-block">
+                        <i data-lucide="leaf" class="w-8 h-8 text-emerald-600"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Die Offenen</h2>
+                <p class="text-gray-500 font-semibold mb-4">18-35 Jahre | Urban & umweltbewusst</p>
+                <div class="flex justify-center space-x-4 my-4">
+                    <div class="p-2 bg-gray-100 rounded-full" title="Studierende">
+                        <i data-lucide="graduation-cap" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Rad & ÖPNV">
+                        <i data-lucide="bike" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Urbanes Wohnen">
+                        <i data-lucide="building-2" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                </div>
+                <ul class="text-left space-y-2 text-gray-700 mt-2 list-none">
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 mr-2 mt-0.5 flex-shrink-0"></i>Wohnlage: Zentral & urban</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 mr-2 mt-0.5 flex-shrink-0"></i>Wert: Umweltschutz</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-500 mr-2 mt-0.5 flex-shrink-0"></i>Mobil mit Rad & ÖPNV</li>
+                </ul>
+            </div>
+
+            <!-- Card 2: Die Performer -->
+            <div class="card bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center border-t-4 border-blue-500">
+                <div class="mb-4">
+                    <div class="bg-blue-100 rounded-full p-3 inline-block">
+                        <i data-lucide="trending-up" class="w-8 h-8 text-blue-600"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Die Performer</h2>
+                <p class="text-gray-500 font-semibold mb-4">25-45 Jahre | Leistungsorientiert</p>
+                <div class="flex justify-center space-x-4 my-4">
+                    <div class="p-2 bg-gray-100 rounded-full" title="Hohes Einkommen">
+                        <i data-lucide="gem" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                     <div class="p-2 bg-gray-100 rounded-full" title="Schnelle Verbindungen">
+                        <i data-lucide="zap" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Exklusives Wohnen">
+                        <i data-lucide="home" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                </div>
+                 <ul class="text-left space-y-2 text-gray-700 mt-2 list-none">
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"></i>Wohnlage: Exklusiv & peripher</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"></i>Fokus auf schnelle Verbindungen</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0"></i>Gehobenes Einkommen</li>
+                </ul>
+            </div>
+
+            <!-- Card 3: Die Pragmatischen -->
+            <div class="card bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center border-t-4 border-orange-500">
+                <div class="mb-4">
+                    <div class="bg-orange-100 rounded-full p-3 inline-block">
+                        <i data-lucide="scale" class="w-8 h-8 text-orange-600"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Die Pragmatischen</h2>
+                <p class="text-gray-500 font-semibold mb-4">Mittleres Alter | Kosten-Nutzen</p>
+                <div class="flex justify-center space-x-4 my-4">
+                    <div class="p-2 bg-gray-100 rounded-full" title="Familien">
+                        <i data-lucide="users" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Pkw-orientiert">
+                        <i data-lucide="car" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Kostenbewusst">
+                        <i data-lucide="piggy-bank" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                </div>
+                 <ul class="text-left space-y-2 text-gray-700 mt-2 list-none">
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-orange-500 mr-2 mt-0.5 flex-shrink-0"></i>Wohnlage: Etablierte Bezirke</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-orange-500 mr-2 mt-0.5 flex-shrink-0"></i>Handeln aus Alltagslogik</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-orange-500 mr-2 mt-0.5 flex-shrink-0"></i>Pkw-fokussiert, aber offen</li>
+                </ul>
+            </div>
+
+            <!-- Card 4: Die Skeptischen -->
+            <div class="card bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center border-t-4 border-red-500">
+                <div class="mb-4">
+                    <div class="bg-red-100 rounded-full p-3 inline-block">
+                        <i data-lucide="shield-alert" class="w-8 h-8 text-red-600"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Die Skeptischen</h2>
+                <p class="text-gray-500 font-semibold mb-4">30+ Jahre | Unsicher & Pkw-abhängig</p>
+                <div class="flex justify-center space-x-4 my-4">
+                    <div class="p-2 bg-gray-100 rounded-full" title="Abstiegsängste">
+                        <i data-lucide="trending-down" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Starke Pkw-Abhängigkeit">
+                        <i data-lucide="car-front" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                    <div class="p-2 bg-gray-100 rounded-full" title="Bedrohungsgefühl">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 text-gray-600"></i>
+                    </div>
+                </div>
+                 <ul class="text-left space-y-2 text-gray-700 mt-2 list-none">
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0"></i>Wohnlage: Sozial belastete Stadtteile</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0"></i>Geprägt von Unsicherheit</li>
+                    <li class="flex items-start"><i data-lucide="check-circle-2" class="w-5 h-5 text-red-500 mr-2 mt-0.5 flex-shrink-0"></i>Starke Pkw-Abhängigkeit</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
