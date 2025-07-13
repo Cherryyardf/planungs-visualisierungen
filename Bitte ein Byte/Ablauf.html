@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitte ein BYTE: Datengestützte Stadtentwicklung Dormagen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-step {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .flow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 2rem;
+            line-height: 1;
+            color: #ff6361;
+        }
+        .flow-arrow-down::after {
+            content: '↓';
+            font-size: 2rem;
+            line-height: 1;
+            color: #ff6361;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-[#003f5c] text-white p-8 text-center shadow-lg">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">Bitte ein BYTE</h1>
+        <p class="text-xl md:text-2xl text-gray-300">Aufenthaltsqualität sichtbar machen: Die Innenstadt Dormagen datenbasiert aufwerten</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="text-center mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-4">Die Herausforderung: Fundierte Entscheidungen in der Stadtplanung</h2>
+                <p class="text-lg mb-4">Die Neuplanung der Innenstadt Dormagens erfordert eine solide Grundlage für Investitionen. Anstatt sich auf Annahmen zu verlassen, erprobt das Projekt "CityPlanner" den <span class="font-bold text-[#ff6361]">"Test Before Invest"</span>-Ansatz. Ziel ist es, Raumverhältnisse datenbasiert sichtbar zu machen und die Aufenthaltsqualität systematisch zu verbessern, bevor kostspielige, permanente Änderungen vorgenommen werden.</p>
+                <div class="bg-amber-100 border-l-4 border-[#ffa600] text-[#003f5c] p-4 rounded-r-lg inline-block">
+                    <div class="text-4xl font-bold">4-wöchiger Testzeitraum</div>
+                    <p class="text-lg">Temporäre Maßnahmen im urbanen Reallabor</p>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-12 border-gray-300">
+
+        <section id="udp" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-8">Die Urbane Datenplattform (UDP): Das digitale Nervensystem</h2>
+            <p class="text-center max-w-3xl mx-auto text-lg mb-8">Die UDP ist ein modulares digitales Werkzeug, das verschiedene Echtzeitdaten aus dem Stadtraum sammelt, filtert und visuell ausgibt. Sie ist das Herzstück des Projekts und ermöglicht eine evidenzbasierte Testung von Maßnahmen.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-4xl mb-4">🚶</div>
+                    <h3 class="text-xl font-bold text-[#58508d] mb-2">Frequenzdaten</h3>
+                    <p>Erfassung von Menschenströmen und Verweildauer mittels Bluetooth-Signalen und Lichtschranken zur Analyse der tatsächlichen Raumnutzung.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-4xl mb-4">🚗</div>
+                    <h3 class="text-xl font-bold text-[#bc5090] mb-2">Verkehrsdaten</h3>
+                    <p>Messung des Verkehrsaufkommens von Pkw, Lkw, Rad und Bus per Radar, um Verkehrsflüsse und -belastungen zu verstehen.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-4xl mb-4">🌡️</div>
+                    <h3 class="text-xl font-bold text-[#ff6361] mb-2">Umweltdaten</h3>
+                    <p>Sammlung von Daten zu Temperatur, Luftfeuchtigkeit, CO2, Feinstaub und Lautstärke zur Bewertung des Mikroklimas.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <div class="text-4xl mb-4">👍</div>
+                    <h3 class="text-xl font-bold text-[#ffa600] mb-2">Nutzerfeedback</h3>
+                    <p>Direktes Meinungsbild der Bürger:innen durch QR-Code-Bewertungen, "Likes" und detaillierte Online-Umfragen.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-12 border-gray-300">
+
+        <section id="dashboards" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-8">Daten in Aktion: Die UDP-Dashboards</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-2xl font-bold text-[#58508d] mb-4 text-center">Dashboard 1: Erprobung der Aufenthaltsqualität</h3>
+                <p class="text-center max-w-3xl mx-auto text-lg mb-8">Dieses Dashboard fokussiert sich auf die unmittelbare Wirkung temporärer Maßnahmen. Es analysiert, wie sich Interventionen wie neue Sitzmöbel oder Bepflanzungen auf die Nutzung und Wahrnehmung öffentlicher Räume auswirken.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h4 class="text-xl font-semibold text-center mb-2">Hitzebelastung vs. Frequenz</h4>
+                        <p class="text-center mb-4 px-4">Dieses Diagramm zeigt, wie die Anzahl der Passanten (Frequenz) mit der Umgebungstemperatur korreliert. Große, rote Blasen deuten auf beliebte, aber heiße Orte hin – ein klares Signal für den Bedarf an schattenspendenden Maßnahmen.</p>
+                        <div class="chart-container">
+                            <canvas id="frequencyHeatmapChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-center mb-2">Verweildauer im Tagesverlauf</h4>
+                        <p class="text-center mb-4 px-4">Die Kurve visualisiert, wie lange sich Menschen zu verschiedenen Tageszeiten an einem Ort aufhalten. Ein Anstieg nach der Installation von Sitzmöbeln deutet auf eine erfolgreiche Maßnahme zur Steigerung der Aufenthaltsqualität hin.</p>
+                        <div class="chart-container">
+                            <canvas id="dwellTimeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                         <h4 class="text-xl font-semibold text-center mb-2">Feedback zu temporären Installationen</h4>
+                        <p class="text-center mb-4 px-4">Das Donut-Diagramm fasst das direkte Feedback der Nutzer:innen zu neuen Installationen (z.B. Bänke, Spielgeräte) zusammen. Es bietet eine schnelle, qualitative Bewertung der Akzeptanz und Beliebtheit von Maßnahmen.</p>
+                        <div class="chart-container h-[300px] md:h-[350px]">
+                            <canvas id="feedbackChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-bold text-[#bc5090] mb-4 text-center">Dashboard 2: Digitaler Maßnahmenmonitor</h3>
+                 <p class="text-center max-w-3xl mx-auto text-lg mb-8">Dieses Dashboard dient der transparenten Kommunikation des Projektfortschritts und der langfristigen Auswirkungen von Baumaßnahmen. Es macht ökologische Effekte und die Anwohnerstimmung messbar.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h4 class="text-xl font-semibold text-center mb-2">Projektfortschritt nach Phasen</h4>
+                        <p class="text-center mb-4 px-4">Ein klarer Überblick über den Status der einzelnen Projektphasen, von der Planung bis zur Umsetzung. Dies erhöht die Transparenz für die Öffentlichkeit und alle beteiligten Stakeholder.</p>
+                        <div class="chart-container">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-center mb-2">CO2-Reduktion nach Entsiegelung</h4>
+                        <p class="text-center mb-4 px-4">Vergleich der CO2-Werte an verschiedenen Standorten vor und nach Begrünungs- und Entsiegelungsmaßnahmen. Die Grafik liefert einen handfesten Beweis für den positiven ökologischen Effekt der Stadtplanung.</p>
+                        <div class="chart-container">
+                            <canvas id="co2ReductionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <h4 class="text-xl font-semibold text-center mb-2">Stimmungsbarometer der Anwohner</h4>
+                        <p class="text-center mb-4 px-4">Verfolgt die Entwicklung der Anwohnerstimmung über den gesamten Projektverlauf. Ein Absinken der Kurve kann ein Frühwarnsignal sein und ermöglicht eine proaktive Kommunikation und Anpassung von Maßnahmen.</p>
+                         <div class="chart-container">
+                            <canvas id="sentimentChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-12 border-gray-300">
+
+        <section id="process" class="mb-12">
+            <h2 class="text-3xl font-bold text-center text-[#003f5c] mb-8">Der iterative Prozess: Von der Idee zur fundierten Entscheidung</h2>
+            <p class="text-center max-w-3xl mx-auto text-lg mb-12">Der "Test Before Invest"-Ansatz ist kein linearer Weg, sondern ein kontinuierlicher Verbesserungszyklus. Jeder Schritt baut auf dem vorherigen auf und liefert wertvolle Erkenntnisse für die nächste Phase.</p>
+
+            <div class="flex flex-col items-center">
+                <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#003f5c]">
+                        <div class="text-2xl font-bold text-[#003f5c] mb-2">1.</div>
+                        <h3 class="text-xl font-semibold mb-2">Problem & Ziel</h3>
+                        <p>Definition der Planungsaufgabe und der zu messenden Ziele für die Aufenthaltsqualität.</p>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center flow-arrow"></div>
+                    <div class="flex md:hidden items-center justify-center flow-arrow-down my-4"></div>
+                    <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#58508d]">
+                        <div class="text-2xl font-bold text-[#58508d] mb-2">2.</div>
+                        <h3 class="text-xl font-semibold mb-2">Strategie & Test</h3>
+                        <p>Planung und Durchführung temporärer Maßnahmen im Reallabor (z.B. neue Sitzmöbel).</p>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center flow-arrow"></div>
+                    <div class="flex md:hidden items-center justify-center flow-arrow-down my-4"></div>
+                    <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#bc5090]">
+                        <div class="text-2xl font-bold text-[#bc5090] mb-2">3.</div>
+                        <h3 class="text-xl font-semibold mb-2">Datenerfassung</h3>
+                        <p>Sammlung von Echtzeitdaten über Frequenz, Umwelt und Nutzerfeedback durch die UDP.</p>
+                    </div>
+                </div>
+                
+                <div class="w-full flex justify-center my-4">
+                     <div class="flow-arrow-down"></div>
+                </div>
+
+                <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                     <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#ffa600]">
+                        <div class="text-2xl font-bold text-[#ffa600] mb-2">6.</div>
+                        <h3 class="text-xl font-semibold mb-2">Evaluation & Anpassung</h3>
+                        <p>Die Erkenntnisse fließen in die Planung zurück und optimieren zukünftige Maßnahmen.</p>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center flow-arrow" style="transform: rotate(180deg);"></div>
+                    <div class="flex md:hidden items-center justify-center flow-arrow-down my-4"></div>
+                    <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#ff6361]">
+                        <div class="text-2xl font-bold text-[#ff6361] mb-2">5.</div>
+                        <h3 class="text-xl font-semibold mb-2">Analyse & Interpretation</h3>
+                        <p>Identifikation von Mustern und Ursache-Wirkungs-Beziehungen in den Daten.</p>
+                    </div>
+                    <div class="hidden md:flex items-center justify-center flow-arrow" style="transform: rotate(180deg);"></div>
+                    <div class="flex md:hidden items-center justify-center flow-arrow-down my-4"></div>
+                     <div class="flow-step bg-white p-6 rounded-lg shadow-md border-t-4 border-[#ff6361]">
+                        <div class="text-2xl font-bold text-[#ff6361] mb-2">4.</div>
+                        <h3 class="text-xl font-semibold mb-2">Visualisierung</h3>
+                        <p>Aufbereitung der Daten in verständlichen Dashboards und Widgets.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-12 border-gray-300">
+
+        <section id="conclusion" class="text-center">
+             <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-[#003f5c] mb-4">Fazit: Mehr als nur Daten</h2>
+                <p class="text-lg mb-4">Die Urbane Datenplattform ist mehr als ein technisches Instrument. Sie ist ein strategisches Werkzeug, das eine präzisere und bürgerzentrierte Stadtentwicklung ermöglicht. Durch die Operationalisierung komplexer Daten ("Was bedeutet 'zu laut' oder 'zu heiß'?") wird die Planung für alle Beteiligten – Planer, Politik und Öffentlichkeit – greifbarer und transparenter.</p>
+                <p class="text-xl font-semibold text-[#58508d]">Mit "Test Before Invest" werden nicht nur Gelder, sondern vor allem auch massive Zeiteinsparungen in der Stadtentwicklung realisiert.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#003f5c] text-white text-center p-4 mt-12">
+        <p>Ein Projekt von Lukas Willmy | RWTH Aachen | Betreut durch Msc. Caner Telli</p>
+        <p class="text-xs text-gray-400 mt-2">Diese Infografik wurde basierend auf dem Dokument "Abgabe 14.07.pdf" erstellt.</p>
+    </footer>
+
+    <script>
+        const brilliantBlues = {
+            darkBlue: '#003f5c',
+            purple: '#58508d',
+            magenta: '#bc5090',
+            red: '#ff6361',
+            orange: '#ffa600'
+        };
+
+        const chartTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: '#374151'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#374151' },
+                    grid: { color: '#e5e7eb' }
+                },
+                x: {
+                    ticks: { color: '#374151' },
+                    grid: { color: '#e5e7eb' }
+                }
+            },
+            maintainAspectRatio: false
+        };
+
+        function wrapLabels(label) {
+            const maxLength = 16;
+            if (typeof label !== 'string' || label.length <= maxLength) return label;
+            
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine += ' ' + word;
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        new Chart(document.getElementById('frequencyHeatmapChart'), {
+            type: 'bubble',
+            data: {
+                datasets: [{
+                    label: 'Marktplatz',
+                    data: [{x: 22, y: 120, r: 25}],
+                    backgroundColor: brilliantBlues.orange
+                }, {
+                    label: 'Rathausplatz',
+                    data: [{x: 28, y: 150, r: 40}],
+                    backgroundColor: brilliantBlues.red
+                }, {
+                    label: 'Rheinuferzugang',
+                    data: [{x: 24, y: 210, r: 35}],
+                    backgroundColor: brilliantBlues.orange
+                }, {
+                    label: 'Übergang Innenstadt',
+                    data: [{x: 30, y: 90, r: 28}],
+                    backgroundColor: brilliantBlues.red
+                }, {
+                    label: 'Neuer Parkbereich',
+                    data: [{x: 21, y: 180, r: 30}],
+                    backgroundColor: brilliantBlues.purple
+                }]
+            },
+            options: { ...chartTooltipOptions,
+                plugins: { ...chartTooltipOptions.plugins, legend: { display: true } },
+                scales: {
+                    y: { ...chartTooltipOptions.scales.y, title: { display: true, text: 'Frequenz (Personen/Stunde)' } },
+                    x: { ...chartTooltipOptions.scales.x, title: { display: true, text: 'Temperatur (°C)' } }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('dwellTimeChart'), {
+            type: 'line',
+            data: {
+                labels: ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
+                datasets: [{
+                    label: 'Vorher',
+                    data: [5, 8, 10, 12, 11, 9, 6],
+                    borderColor: brilliantBlues.purple,
+                    backgroundColor: 'rgba(88, 80, 141, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Nachher (mit Sitzmöbeln)',
+                    data: [6, 10, 18, 25, 22, 15, 10],
+                    borderColor: brilliantBlues.red,
+                    backgroundColor: 'rgba(255, 99, 97, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { ...chartTooltipOptions, scales: { y: { ...chartTooltipOptions.scales.y, title: { display: true, text: 'Durchschnittl. Verweildauer (Minuten)' } } } }
+        });
+
+        new Chart(document.getElementById('feedbackChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Positiv', 'Neutral', 'Negativ'],
+                datasets: [{
+                    label: 'Feedback zu neuen Sitzbänken',
+                    data: [185, 45, 15],
+                    backgroundColor: [brilliantBlues.red, brilliantBlues.orange, brilliantBlues.purple],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                plugins: { ...chartTooltipOptions.plugins, legend: { position: 'top' } },
+                maintainAspectRatio: false
+            }
+        });
+
+        const progressLabels = ['Phase 1: Planung', 'Phase 2: Bürgerbeteiligung', 'Phase 3: Entsiegelung', 'Phase 4: Begrünung'].map(wrapLabels);
+        new Chart(document.getElementById('progressChart'), {
+            type: 'bar',
+            data: {
+                labels: progressLabels,
+                datasets: [{
+                    label: 'Projektfortschritt (%)',
+                    data: [100, 100, 75, 40],
+                    backgroundColor: [brilliantBlues.darkBlue, brilliantBlues.purple, brilliantBlues.magenta, brilliantBlues.red],
+                    borderColor: '#ffffff',
+                    borderWidth: 2
+                }]
+            },
+            options: { ...chartTooltipOptions, indexAxis: 'y', plugins: { ...chartTooltipOptions.plugins, legend: { display: false } } }
+        });
+
+        const co2Labels = ['Standort A', 'Standort B', 'Standort C'].map(wrapLabels);
+        new Chart(document.getElementById('co2ReductionChart'), {
+            type: 'bar',
+            data: {
+                labels: co2Labels,
+                datasets: [{
+                    label: 'Vorher',
+                    data: [550, 620, 580],
+                    backgroundColor: brilliantBlues.purple,
+                }, {
+                    label: 'Nachher',
+                    data: [450, 510, 490],
+                    backgroundColor: brilliantBlues.red,
+                }]
+            },
+            options: { ...chartTooltipOptions, scales: { y: { ...chartTooltipOptions.scales.y, title: { display: true, text: 'CO2-Wert (ppm)' } } } }
+        });
+        
+        new Chart(document.getElementById('sentimentChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Anwohnerstimmung (Skala 1-10)',
+                    data: [7.5, 7.8, 7.2, 6.5, 6.8, 7.1, 7.4],
+                    borderColor: brilliantBlues.magenta,
+                    fill: false,
+                    tension: 0.1
+                }]
+            },
+            options: chartTooltipOptions
+        });
+
+    </script>
+</body>
+</html>
