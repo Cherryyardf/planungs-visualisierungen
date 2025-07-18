@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona-Analyse Redesign (Tabelle)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Stile für die responsive Tabelle */
+        @media (max-width: 767px) {
+            .table-header {
+                display: none;
+            }
+            .table-cell {
+                display: flex;
+                align-items: center;
+                padding-top: 0.75rem;
+                padding-bottom: 0.75rem;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .table-cell:before {
+                content: attr(data-label);
+                font-weight: 600;
+                width: 100px;
+                flex-shrink: 0;
+                margin-right: 1rem;
+                color: #4b5563;
+            }
+            .persona-card-mobile {
+                 border-left-width: 4px;
+                 margin-bottom: 2rem;
+                 border-radius: 0.5rem;
+                 overflow: hidden;
+                 box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            }
+            .persona-header-mobile {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+        <header class="text-center mb-10 md:mb-12">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900">Persona-Analyse: Klimaschutz & Lebensstil</h1>
+            <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">Eine tabellarische Aufbereitung der Zielgruppen zur Identifikation von Potenzialen für Klimaschutzmaßnahmen.</p>
+        </header>
+
+        <!-- Tabellen-Container -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            
+            <!-- Tabellen-Header (nur für Desktop) -->
+            <div class="table-header grid grid-cols-6 text-center font-bold text-gray-700 border-b-2 border-gray-200">
+                <div class="p-4">Persona</div>
+                <div class="p-4">Einkommen</div>
+                <div class="p-4">Wohnen</div>
+                <div class="p-4">Mobilität</div>
+                <div class="p-4">Heizung</div>
+                <div class="p-4">Belastungen</div>
+            </div>
+
+            <!-- Daten-Container -->
+            <div>
+                <!-- Reihe 1: Die Offenen -->
+                <div class="persona-card-mobile border-yellow-400">
+                    <div class="grid grid-cols-1 md:grid-cols-6">
+                        <div class="persona-header-mobile md:p-4 bg-yellow-50 flex flex-col justify-center items-center text-center row-span-5">
+                             <div class="p-3 rounded-full bg-yellow-200 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900">Die Offenen</h2>
+                            <p class="text-sm text-gray-600 mt-1 italic">"Investitionsfreudige Idealisten"</p>
+                        </div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Einkommen"><span>Mittel bis hoch (2.800€ - 4.500€)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Wohnen"><span>Teure Mehrfamilienhäuser (urban)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Mobilität"><span>Intensiv Fahrrad & ÖPNV</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Heizung"><span>Oft bereits umgestiegen (Wärmepumpe, Solar)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Belastungen"><span>Hohe Sensibilität, leben in hitzebelasteten Zonen</span></div>
+                    </div>
+                </div>
+
+                <!-- Reihe 2: Die Pragmatischen -->
+                 <div class="persona-card-mobile border-green-400">
+                    <div class="grid grid-cols-1 md:grid-cols-6">
+                        <div class="persona-header-mobile md:p-4 bg-green-50 flex flex-col justify-center items-center text-center row-span-5">
+                             <div class="p-3 rounded-full bg-green-200 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.373 3.373 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900">Die Pragmatischen</h2>
+                            <p class="text-sm text-gray-600 mt-1 italic">"Kostenbewusste Realisten"</p>
+                        </div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Einkommen"><span>Durchschnittlich bis gut (2.500€ - 4.000€)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Wohnen"><span>Reihen-/Einfamilienhäuser (Vorort)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Mobilität"><span>Hohe PKW-Dichte, Auto als Notwendigkeit</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Heizung"><span>Gas dominiert, Potenzial bei Amortisation</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Belastungen"><span>Mäßig betroffen, kein direkter Handlungsdruck</span></div>
+                    </div>
+                </div>
+
+                <!-- Reihe 3: Die Performer -->
+                 <div class="persona-card-mobile border-purple-400">
+                    <div class="grid grid-cols-1 md:grid-cols-6">
+                        <div class="persona-header-mobile md:p-4 bg-purple-50 flex flex-col justify-center items-center text-center row-span-5">
+                             <div class="p-3 rounded-full bg-purple-200 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l1.09 2.18L15 6l-2.18 1.09L11.73 9 11 7.09 8.82 6l2.18-1.09L12 3zM3 21h18M12 14a2 2 0 100-4 2 2 0 000 4z" /></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900">Die Performer</h2>
+                            <p class="text-sm text-gray-600 mt-1 italic">"Finanzstarke Etablierte"</p>
+                        </div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Einkommen"><span>Sehr hoch (> 4.500€)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Wohnen"><span>Einfamilienhäuser in grünen Lagen</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Mobilität"><span>Hohe PKW-Dichte, Auto als Notwendigkeit</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Heizung"><span>Gas dominiert, Potenzial bei Amortisation</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Belastungen"><span>Wenig betroffen, Klimaschutz aus Überzeugung</span></div>
+                    </div>
+                </div>
+
+                <!-- Reihe 4: Die Skeptischen -->
+                 <div class="persona-card-mobile border-blue-400">
+                    <div class="grid grid-cols-1 md:grid-cols-6">
+                        <div class="persona-header-mobile md:p-4 bg-blue-50 flex flex-col justify-center items-center text-center row-span-5">
+                             <div class="p-3 rounded-full bg-blue-200 mb-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900">Die Skeptischen</h2>
+                            <p class="text-sm text-gray-600 mt-1 italic">"Preis-sensibel mit anderen Prioritäten"</p>
+                        </div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Einkommen"><span>Gering bis durchschnittlich (< 2.500€)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Wohnen"><span>Oft zur Miete in älteren Häusern</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Mobilität"><span>Offen für E-Mobilität als Statussymbol</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Heizung"><span>Oft veraltete Systeme (Nachtspeicher)</span></div>
+                        <div class="table-cell md:p-4 md:text-center" data-label="Belastungen"><span>Stark betroffen, finanzielle Sorgen überwiegen</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
