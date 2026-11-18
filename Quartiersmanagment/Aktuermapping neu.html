@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akteursmapping: Zwischennutzungsprojekt in einer Großstadt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .actor-node {
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease-in-out;
+            position: relative;
+            background-color: #fff; /* Ensure background for printing */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .actor-node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .node-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.5rem;
+        }
+        .node-subtitle {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #475569; /* slate-600 */
+            margin-bottom: 1rem;
+        }
+        .node-description {
+            font-size: 0.875rem;
+            color: #64748b; /* slate-500 */
+        }
+        .connector-label {
+            background-color: #f1f5f9; /* slate-100 */
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #475569; /* slate-600 */
+            position: absolute;
+            transform: translate(-50%, -50%);
+            border: 1px solid #e2e8f0; /* slate-200 */
+            z-index: 10; /* Ensure labels are on top */
+        }
+        /* Specific colors for categories */
+        .cat-initiator { border-top: 4px solid #f97316; } /* orange-500 */
+        .cat-politik { border-top: 4px solid #22c55e; } /* green-500 */
+        .cat-verwaltung { border-top: 4px solid #3b82f6; } /* blue-500 */
+        .cat-eigentuemer { border-top: 4px solid #a855f7; } /* purple-500 */
+        .cat-medien { border-top: 4px solid #ec4899; } /* pink-500 */
+        .cat-community { border-top: 4px solid #f59e0b; } /* amber-500 */
+
+        /* Positioning for a clearer layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto;
+            gap: 6rem 4rem; 
+            padding: 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+        /* Manual placement of nodes in the grid */
+        #node-a { grid-column: 2; grid-row: 2; }
+        #node-b { grid-column: 1; grid-row: 1; }
+        #node-c { grid-column: 2; grid-row: 1; }
+        #node-d { grid-column: 3; grid-row: 1; }
+        #node-f { grid-column: 1; grid-row: 3; }
+        #node-e { grid-column: 2; grid-row: 3; }
+        #node-g { grid-column: 3; grid-row: 3; }
+        
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            #node-a { grid-column: 1 / span 2; grid-row: 1; }
+            #node-b { grid-column: 1; grid-row: 2; }
+            #node-c { grid-column: 2; grid-row: 2; }
+            #node-d { grid-column: 1; grid-row: 3; }
+            #node-f { grid-column: 2; grid-row: 3; }
+            #node-e { grid-column: 1; grid-row: 4; }
+            #node-g { grid-column: 2; grid-row: 4; }
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+             /* Reset grid positions for single column layout */
+            #node-a, #node-b, #node-c, #node-d, #node-f, #node-e, #node-g {
+                grid-column: auto;
+                grid-row: auto;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background-color: #fff;
+            }
+            .no-print {
+                display: none;
+            }
+            .actor-node {
+                box-shadow: none;
+                border: 1px solid #e2e8f0;
+            }
+            #connector-svg {
+                display: none; /* Hide SVG lines for simpler print layout */
+            }
+            .connector-label {
+                 display: none; /* Hide labels for simpler print layout */
+            }
+        }
+        
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <div class="text-center mb-8 relative">
+            <h1 class="text-4xl font-bold text-slate-900">Akteursmapping: Zwischennutzungsprojekt in einer Großstadt</h1>
+            <p class="mt-2 text-lg text-slate-600">Visuelle Darstellung der Beziehungen und Rollen</p>
+            <button onclick="window.print()" class="no-print absolute top-0 right-0 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                Als PDF exportieren
+            </button>
+        </div>
+
+        <div class="relative grid-container" id="map-container">
+            <!-- Initiator -->
+            <div id="node-a" class="actor-node bg-white cat-initiator">
+                <h3 class="node-title text-orange-600">Akteur A</h3>
+                <p class="node-subtitle">Projektinitiative & zentrale Rolle</p>
+                <p class="node-description">Leitete das Projekt, vernetzte die Akteure und war die treibende Kraft hinter der Zwischennutzung. Fungierte als Hauptansprechperson.</p>
+            </div>
+
+            <!-- Obere Reihe -->
+            <div id="node-b" class="actor-node bg-white cat-politik">
+                <h3 class="node-title text-green-600">Akteur B</h3>
+                <p class="node-subtitle">Vertreter*in einer Partei / Mentoring</p>
+                <p class="node-description">Agierte als Mentor*in. Sorgte für politische Rückendeckung und vermittelte entscheidende Kontakte zur Verwaltung.</p>
+            </div>
+            <div id="node-c" class="actor-node bg-white cat-verwaltung">
+                <h3 class="node-title text-blue-600">Akteur C</h3>
+                <p class="node-subtitle">Mitarbeiter*in der Bauverwaltung</p>
+                <p class="node-description">Zuständig für die Genehmigung der temporären Nutzung. Arbeitete konstruktiv an Lösungen für Sicherheitsfragen (z.B. Brandschutz).</p>
+            </div>
+            <div id="node-d" class="actor-node bg-white cat-verwaltung">
+                <h3 class="node-title text-blue-600">Akteur D</h3>
+                <p class="node-subtitle">Mitarbeiter*in der Bauverwaltung</p>
+                <p class="node-description">Formale Ansprechperson für den Bauantrag im Genehmigungsprozess.</p>
+            </div>
+
+            <!-- Untere Reihe -->
+            <div id="node-f" class="actor-node bg-white cat-eigentuemer">
+                <h3 class="node-title text-purple-600">Immobilienunternehmen</h3>
+                <p class="node-subtitle">Gebäudeeigentümer</p>
+                <p class="node-description">Unterstützte die Zwischennutzung als "Brückeninstrument" und bewertete das Projekt als sehr positiv für die Aufwertung des Standorts.</p>
+            </div>
+            <div id="node-e" class="actor-node bg-white cat-medien">
+                <h3 class="node-title text-pink-600">Akteur E</h3>
+                <p class="node-subtitle">Lokales Medium</p>
+                <p class="node-description">Wichtige Medienpartnerschaft. Unterstützte durch positive Berichterstattung, Artikel und die Pflege des Terminkalenders.</p>
+            </div>
+            <div id="node-g" class="actor-node bg-white cat-community">
+                <h3 class="node-title text-amber-600">Verein (Freiwillige)</h3>
+                <p class="node-subtitle">Helfer & Community</p>
+                <p class="node-description">Aktive Freiwillige, die bei Aktionen halfen und maßgeblich zur Belebung des Ortes beitrugen. Akteur A war selbst Teil des Vereins.</p>
+            </div>
+            
+            <!-- Connector Lines and Labels will be drawn by JavaScript -->
+            <svg id="connector-svg" class="absolute top-0 left-0 w-full h-full" style="z-index: -1;"></svg>
+        </div>
+    </div>
+
+    <script>
+    // This script draws lines between the nodes to show relationships.
+    document.addEventListener('DOMContentLoaded', function() {
+        const svg = document.getElementById('connector-svg');
+        const container = document.getElementById('map-container');
+
+        const connections = [
+            { from: 'node-a', to: 'node-b', label: 'Mentoring & Kontakt' },
+            { from: 'node-b', to: 'node-c', label: 'Vermittelt Kontakt' },
+            { from: 'node-a', to: 'node-c', label: 'Konstruktive Zusammenarbeit' },
+            { from: 'node-a', to: 'node-f', label: 'Kooperation' },
+            { from: 'node-a', to: 'node-e', label: 'Mediale Partnerschaft' },
+            { from: 'node-a', to: 'node-g', label: 'Teil von & Koordination' }
+        ];
+
+        function drawLines() {
+            // Clear previous elements
+            svg.innerHTML = '';
+            // Remove old labels
+            container.querySelectorAll('.connector-label').forEach(label => label.remove());
+
+            const containerRect = container.getBoundingClientRect();
+
+            // Check if container has valid dimensions
+            if (containerRect.width === 0 || containerRect.height === 0) {
+                // If not visible yet, try again shortly
+                setTimeout(drawLines, 100);
+                return;
+            }
+
+            connections.forEach(conn => {
+                const fromNode = document.getElementById(conn.from);
+                const toNode = document.getElementById(conn.to);
+
+                if (!fromNode || !toNode) return;
+
+                const fromRect = fromNode.getBoundingClientRect();
+                const toRect = toNode.getBoundingClientRect();
+
+                // Calculate coordinates relative to the container
+                const x1 = fromRect.left + fromRect.width / 2 - containerRect.left;
+                const y1 = fromRect.top + fromRect.height / 2 - containerRect.top;
+                const x2 = toRect.left + toRect.width / 2 - containerRect.left;
+                const y2 = toRect.top + toRect.height / 2 - containerRect.top;
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                line.setAttribute('stroke', '#cbd5e1'); // slate-300
+                line.setAttribute('stroke-width', '2');
+                svg.appendChild(line);
+
+                // Add label for the connection
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'connector-label';
+                labelDiv.innerText = conn.label;
+                labelDiv.style.left = `${(x1 + x2) / 2}px`;
+                labelDiv.style.top = `${(y1 + y2) / 2}px`;
+                container.appendChild(labelDiv);
+            });
+        }
+
+        // Use a ResizeObserver for more reliable redrawing on layout changes
+        const observer = new ResizeObserver(drawLines);
+        observer.observe(container);
+
+        // Initial draw
+        drawLines();
+    });
+    </script>
+
+</body>
+</html>
