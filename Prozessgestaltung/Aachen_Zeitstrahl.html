@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail-Zeitstrahl: Innenstadtmobilität Aachen</title>
+    <style>
+        :root {
+            /* Farbcode für die Akteure */
+            --color-zivil: #27ae60;    /* Grün für Zivilgesellschaft */
+            --color-politik: #c0392b;  /* Rot für Politik */
+            --color-verwalt: #2980b9;  /* Blau für Verwaltung */
+            --color-dienstl: #f39c12;  /* Orange für Dienstleister/Wirtschaft */
+            
+            --bg-color: #f9f9f9;
+            --text-main: #333;
+            --text-muted: #666;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* A3 Container Setup */
+        .poster-container {
+            max-width: 1200px; /* Optimal für A3 Skalierung */
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+        }
+
+        /* Legende */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        /* Timeline Kernstruktur */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Die zentrale Linie */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #ddd;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            border-radius: 3px;
+        }
+
+        /* Einzelne Stationen (Container für das Ping-Pong) */
+        .container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+
+        /* Die Punkte auf der Linie */
+        .container::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -12px;
+            background-color: white;
+            border: 4px solid #ddd;
+            top: 28px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .right::after {
+            left: -12px;
+        }
+
+        /* Farbige Punkte je nach Akteur */
+        .zivil::after { border-color: var(--color-zivil); }
+        .politik::after { border-color: var(--color-politik); }
+        .verwalt::after { border-color: var(--color-verwalt); }
+        .dienstl::after { border-color: var(--color-dienstl); }
+
+        /* Die Cards (Inhalt) */
+        .content {
+            padding: 15px 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #ddd;
+        }
+
+        /* Farbige Ränder für die Cards */
+        .zivil .content { border-top-color: var(--color-zivil); }
+        .politik .content { border-top-color: var(--color-politik); }
+        .verwalt .content { border-top-color: var(--color-verwalt); }
+        .dienstl .content { border-top-color: var(--color-dienstl); }
+
+        /* Pfeile für Kausalität */
+        .causal-arrow {
+            text-align: center;
+            color: #bdc3c7;
+            font-size: 20px;
+            font-weight: bold;
+            margin: -15px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Typografie in den Cards */
+        .date-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        .zivil .date-badge { background-color: var(--color-zivil); }
+        .politik .date-badge { background-color: var(--color-politik); }
+        .verwalt .date-badge { background-color: var(--color-verwalt); }
+        .dienstl .date-badge { background-color: var(--color-dienstl); }
+
+        .actor-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-muted);
+        }
+
+        .content h2 {
+            margin: 0 0 6px 0;
+            font-size: 17px;
+            line-height: 1.3;
+        }
+
+        .content p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--text-muted);
+        }
+
+        /* Sonderkarte für die "unsichtbaren" Dienstleister */
+        .special-note {
+            background-color: #fff3e0;
+            border: 2px dashed var(--color-dienstl);
+        }
+        
+        .year-marker {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #7f8c8d;
+            background: #fff;
+            padding: 10px;
+            position: relative;
+            z-index: 2;
+            width: 100px;
+            margin: 20px auto;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="poster-container">
+    <h1>Prozessrekonstruktion: Automobilität & Innenstadtkonzept Aachen</h1>
+    <div class="subtitle">Chronologische Analyse der Akteurs-Interaktionen (2019 - 2026)</div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background: var(--color-zivil);"></div>Zivilgesellschaft (Impulse & Forderungen)</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--color-verwalt);"></div>Verwaltung (Gutachten, Prüfungen, PR & Umsetzung)</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--color-politik);"></div>Politik (Anträge, Ausschüsse, Beschlüsse)</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--color-dienstl);"></div>Wirtschaft / Dienstleister (Reaktionen)</div>
+    </div>
+
+    <div class="timeline">
+
+        <div class="year-marker">2019</div>
+
+        <div class="container left zivil">
+            <div class="content">
+                <div class="date-badge">Mai 2019</div>
+                <div class="actor-label">Zivilgesellschaft (Bürgerforum)</div>
+                <h2>Erste Sperr-Forderungen</h2>
+                <p>Bürgerantrag fordert die Sperrung der Grachtstraße für KFZ-Verkehr. Die Unzufriedenheit über Schleichverkehre wächst lokal.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Mai 2019</div>
+                <div class="actor-label">Politik (Mobilitätsausschuss)</div>
+                <h2>Mobilitätsstrategie 2030 (Teil 1)</h2>
+                <p>Auftrag und Struktur für eine neue, stadtweite Mobilitätsstrategie werden offiziell von der Politik beschlossen.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left verwalt">
+            <div class="content">
+                <div class="date-badge">Sommer 2019</div>
+                <div class="actor-label">Verwaltung</div>
+                <h2>Prüfung Bewohnerparken</h2>
+                <p>Die Verwaltung führt massive Voruntersuchungen zur Ausweitung der Bewohnerparkzonen (Ost2, BU3) durch, um den Parkdruck zu managen.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left zivil">
+            <div class="content">
+                <div class="date-badge">Nov 2019</div>
+                <div class="actor-label">Zivilgesellschaft</div>
+                <h2>Radentscheid Aachen</h2>
+                <p>Über 40.000 Unterschriften erzwingen ein Umdenken in der Verkehrspolitik (Vorrang für Umweltverbund statt Auto).</p>
+            </div>
+        </div>
+
+        <div class="year-marker">2020</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Jan 2020</div>
+                <div class="actor-label">Politik (Mobilitätsausschuss)</div>
+                <h2>Emissionsfreie Innenstadt</h2>
+                <p>Beschluss der Ziele für 2030. Erster politischer Fokusbericht über "Emissionsfreien Innenstadtverkehr".</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left verwalt">
+            <div class="content">
+                <div class="date-badge">Feb 2020</div>
+                <div class="actor-label">Verwaltung (Planungsausschuss)</div>
+                <h2>Vorbereitung "Theaterplatz 2022"</h2>
+                <p>Die Verwaltung präsentiert erste Konzepte für eine neue Verkehrsführung am Theaterplatz (Vorläufer zum Innenstadtkonzept).</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left zivil">
+            <div class="content">
+                <div class="date-badge">Sep 2020</div>
+                <div class="actor-label">Zivilgesellschaft (Bürgerforum)</div>
+                <h2>Bürgerantrag: Templergraben</h2>
+                <p>Anwohner und Uni-Angehörige fordern vehement die Unterbindung des Kfz-Schleichverkehrs am Super C.</p>
+            </div>
+        </div>
+
+        <div class="year-marker">2021</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Mai 2021</div>
+                <div class="actor-label">Politik (BV Mitte)</div>
+                <h2>Beschluss: Reallabor Templergraben</h2>
+                <p>Die Politik reagiert auf den Bürgerdruck: Eine zentrale Durchfahrtsachse wird testweise für den KFZ-Verkehr gesperrt.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Sep 2021</div>
+                <div class="actor-label">Politik (Fraktionen Grüne & Zukunft)</div>
+                <h2>Antrag: "Parken neu ordnen"</h2>
+                <p>Politischer Auftrag zur gesamtstädtischen Überprüfung und Umverteilung des Parkraums.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Nov 2021</div>
+                <div class="actor-label">Politik (Mehrheitsfraktionen)</div>
+                <h2>Startschuss: "Verkehr neu organisieren"</h2>
+                <p>Der zentrale Ratsantrag zur "Lebenswerten Aachener Innenstadt" wird gestellt. Beginn der Planung des 5-Sektoren-Modells.</p>
+            </div>
+        </div>
+
+        <div class="year-marker">2022</div>
+
+        <div class="container left verwalt">
+            <div class="content">
+                <div class="date-badge">Feb 2022</div>
+                <div class="actor-label">Verwaltung</div>
+                <h2>Entwürfe Verkehrsführung</h2>
+                <p>Die Stadtplaner erarbeiten Detailkonzepte als Reaktion auf den politischen Auftrag "Verkehr neu organisieren".</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left zivil">
+            <div class="content">
+                <div class="date-badge">Aug/Dez 2022</div>
+                <div class="actor-label">Zivilgesellschaft (Bürgerforum)</div>
+                <h2>Anträge für & gegen das Auto</h2>
+                <p>Die Bürgerschaft mischt sich intensiv ein: Anträge zum Erhalt von Parkplätzen (Ferberpark) prallen auf Forderungen nach "Radverteilerringen".</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+        
+        <div class="container right verwalt">
+            <div class="content">
+                <div class="date-badge">Nov '22 / Mai '23</div>
+                <div class="actor-label">Verwaltung (Bürgerbeteiligung)</div>
+                <h2>Mobilitätsforen Innenstadt</h2>
+                <p>Die Verwaltung bereitet die Bevölkerung vor den anstehenden Gutachten durch große Info-Veranstaltungen langsam auf das Umdenken vor.</p>
+            </div>
+        </div>
+        
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Dez 2022</div>
+                <div class="actor-label">Politik (Mobilitätsausschuss)</div>
+                <h2>Erhöhung der Parkgebühren</h2>
+                <p>Erste finanzielle Lenkungsmaßnahme: Tarife für Straßenrand- und Bewohnerparken werden als "Beitrag zur Mobilitätswende" deutlich erhöht.</p>
+            </div>
+        </div>
+
+        <div class="year-marker">2023</div>
+
+        <div class="container left verwalt">
+            <div class="content">
+                <div class="date-badge">Aug 2023</div>
+                <div class="actor-label">Verwaltung (Fachbereich Mobilität)</div>
+                <h2>Vorstellung der Parkraumgutachten</h2>
+                <p>Die Verwaltung liefert die wissenschaftliche Legitimation: Das "Gesamtstädtische Parkraumgutachten" und das "Konzept Quartiersparken" werden vorgelegt.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+        
+        <div class="container right verwalt">
+            <div class="content">
+                <div class="date-badge">Aug/Sep 2023</div>
+                <div class="actor-label">Verwaltung (PR & Kommunikation)</div>
+                <h2>Start der PR-Kampagne</h2>
+                <p>Launch der Website <em>innenstadtmobilitaet-morgen.de</em> und Durchführung von Bürger-Infoabenden, um offensiv Akzeptanz für den bevorstehenden Ratsbeschluss zu schaffen.</p>
+            </div>
+        </div>
+        
+        <div class="causal-arrow">↓</div>
+
+        <div class="container left dienstl">
+            <div class="content special-note">
+                <div class="date-badge" style="background:#f39c12; color:#fff;">OFFENE FRAGE FÜR DAS SEMINAR</div>
+                <div class="actor-label">Die Lücke im System</div>
+                <h2>Wo sind APAG & ASEAG?</h2>
+                <p>Trotz der gewaltigen Auswirkungen der anstehenden Autolenkung auf städtische Parkhäuser (APAG) und Buslinien (ASEAG) tauchen diese Dienstleister vor der Abstimmung <strong>nicht aktiv</strong> im öffentlichen Ratsinfo-System auf.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content" style="border: 3px solid var(--color-politik); background-color: #fdf2f2;">
+                <div class="date-badge">Okt 2023</div>
+                <div class="actor-label">Politik (Mobilitätsausschuss / BV)</div>
+                <h2>GRUNDSATZBESCHLUSS: Neue Lenkung</h2>
+                <p><strong>Der wichtigste Meilenstein!</strong> Die Politik beschließt auf Basis der Gutachten das Gesamtkonzept "Innenstadtmobilität für morgen" (Aussperren des KFZ-Durchgangsverkehrs durch 5 Erschließungsbereiche).</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Nov 2023</div>
+                <div class="actor-label">Politik (BV Mitte)</div>
+                <h2>Planungs- & Ausführungsbeschluss</h2>
+                <p>Mittelbereitstellung und direkter Auftrag zur baulichen und beschilderungstechnischen Umsetzung der neuen Verkehrsführung.</p>
+            </div>
+        </div>
+
+        <div class="year-marker">2024 / 2025</div>
+
+        <div class="container left dienstl">
+            <div class="content">
+                <div class="date-badge">Jan 2024</div>
+                <div class="actor-label">Wirtschaft / Einzelhandel (IHK, MAC)</div>
+                <h2>Protest: Erreichbarkeit der Zentren</h2>
+                <p>Der Einzelhandel fürchtet akute Kundenverluste. Die Politik muss die "Auswirkungen auf einzelhandelsorientierte Stadtzentren" nachträglich auf die Agenda setzen.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right verwalt">
+            <div class="content">
+                <div class="date-badge">Mai 2024</div>
+                <div class="actor-label">Verwaltung (Planungsausschuss)</div>
+                <h2>Vertiefung Ostinnenstadt</h2>
+                <p>Start vorbereitender Untersuchungen gem. §141 BauGB. Die Umverteilung des Verkehrsraums wird stadtplanerisch verfestigt.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+        
+        <div class="container left verwalt">
+            <div class="content">
+                <div class="date-badge">Aug 2024</div>
+                <div class="actor-label">Verwaltung (Umsetzung auf der Straße)</div>
+                <h2>Lenkungspunkt Karlsgraben & Support</h2>
+                <p>Erster physischer Eingriff: Sperrung für Durchgangsverkehr. Um den besorgten Einzelhändlern entgegenzukommen, flankiert die Verwaltung den Umbau mit persönlichen Sprechstunden bei den Geschäften.</p>
+            </div>
+        </div>
+
+        <div class="causal-arrow">↓</div>
+
+        <div class="container right politik">
+            <div class="content">
+                <div class="date-badge">Laufend</div>
+                <div class="actor-label">Verwaltung & Politik</div>
+                <h2>Mikromanagement Quartiere</h2>
+                <p>Die großen Konzepte werden Straße für Straße umgesetzt (z.B. neue Bewohnerparkzonen BU5, Ost-Viertel, West 1).</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
